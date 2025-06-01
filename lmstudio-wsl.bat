@@ -1,0 +1,3 @@
+@echo off
+echo Avvio LM Studio in modalità accessibile da WSL...
+start "" "C:\Users\matti\AppData\Local\Programs\lm-studio\LM Studio.exe" --host 0.0.0.0 --port 1234
