@@ -49,6 +49,7 @@ export const LanguageList = [
   'Japanese',
   'Portuguese BR',
   'German',
+  'Italian',
 ];
 
 export const LanguageMap = {
@@ -61,6 +62,7 @@ export const LanguageMap = {
   Japanese: '日本語',
   'Portuguese BR': 'Português BR',
   German: 'German',
+  Italian: 'Italiano',
 };
 
 export enum LanguageAbbreviation {
@@ -73,6 +75,7 @@ export enum LanguageAbbreviation {
   Vi = 'vi',
   PtBr = 'pt-BR',
   De = 'de',
+  It = 'it',
 }
 
 export const LanguageAbbreviationMap = {
@@ -85,6 +88,7 @@ export const LanguageAbbreviationMap = {
   [LanguageAbbreviation.Ja]: '日本語',
   [LanguageAbbreviation.PtBr]: 'Português BR',
   [LanguageAbbreviation.De]: 'Deutsch',
+  [LanguageAbbreviation.It]: 'Italiano',
 };
 
 export const LanguageTranslationMap = {
@@ -97,6 +101,7 @@ export const LanguageTranslationMap = {
   Japanese: 'ja',
   'Portuguese BR': 'pt-br',
   German: 'de',
+  Italian: 'it',
 };
 
 export enum FileMimeType {

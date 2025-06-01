@@ -1,0 +1,6 @@
+@echo off
+echo === RAGFlow: Restart automatico (Windows) ===
+echo Fermata dei servizi tramite Docker Compose...
+docker compose -f docker/docker-compose.yml down
+echo Avvio dei servizi tramite start_ragflow.bat...
+call start_ragflow.bat

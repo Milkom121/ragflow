@@ -14,6 +14,8 @@ import { BellRing, CircleHelp, MoonIcon, SunIcon } from 'lucide-react';
 import { useNavigate } from 'umi';
 import styled from './index.less';
 
+console.log('LANGUAGELIST:', LanguageList);
+
 const Circle = ({ children, ...restProps }: React.PropsWithChildren) => {
   return (
     <div {...restProps} className={styled.circle}>

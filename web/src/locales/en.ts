@@ -1,6 +1,7 @@
 export default {
   translation: {
     common: {
+      italian: 'Italiano',
       delete: 'Delete',
       deleteModalTitle: 'Are you sure to delete this item?',
       ok: 'Yes',

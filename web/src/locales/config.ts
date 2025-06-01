@@ -13,6 +13,7 @@ import { createTranslationTable, flattenObject } from './until';
 import translation_vi from './vi';
 import translation_zh from './zh';
 import translation_zh_traditional from './zh-traditional';
+import translation_it from './it';
 
 const resources = {
   [LanguageAbbreviation.En]: translation_en,
@@ -24,6 +25,7 @@ const resources = {
   [LanguageAbbreviation.Vi]: translation_vi,
   [LanguageAbbreviation.PtBr]: translation_pt_br,
   [LanguageAbbreviation.De]: translation_de,
+  [LanguageAbbreviation.It]: translation_it,
 };
 const enFlattened = flattenObject(translation_en);
 const viFlattened = flattenObject(translation_vi);
@@ -33,6 +35,7 @@ const jaFlattened = flattenObject(translation_ja);
 const pt_brFlattened = flattenObject(translation_pt_br);
 const zh_traditionalFlattened = flattenObject(translation_zh_traditional);
 const deFlattened = flattenObject(translation_de);
+const itFlattened = flattenObject(translation_it);
 export const translationTable = createTranslationTable(
   [
     enFlattened,
@@ -43,6 +46,7 @@ export const translationTable = createTranslationTable(
     jaFlattened,
     pt_brFlattened,
     deFlattened,
+    itFlattened,
   ],
   [
     'English',
@@ -53,6 +57,7 @@ export const translationTable = createTranslationTable(
     'ja',
     'pt-BR',
     'Deutsch',
+    'Italian',
   ],
 );
 i18n
