@@ -52,7 +52,7 @@ const RightToolBar = () => {
     return data.some((x) => x.role === TenantRole.Invite);
   }, [data]);
 
-  const items: MenuProps['items'] = LanguageList.map((x) => ({
+const items: MenuProps['items'] = LanguageList.map((x) => ({
     key: x,
     label: <span>{LanguageMap[x as keyof typeof LanguageMap]}</span>,
   })).reduce<MenuProps['items']>((pre, cur) => {

@@ -65,6 +65,8 @@ i18n
   .use(LanguageDetector)
   .init({
     detection: {
+      order: ['localStorage', 'navigator', 'htmlTag', 'path', 'subdomain'],
+      caches: ['localStorage'],
       lookupLocalStorage: 'lng',
     },
     supportedLngs: Object.values(LanguageAbbreviation),
