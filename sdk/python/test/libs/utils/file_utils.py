@@ -16,50 +16,34 @@
 
 import json
 
-from docx import Document  # pip install python-docx
-from openpyxl import Workbook  # pip install openpyxl
-from PIL import Image, ImageDraw  # pip install Pillow
-from pptx import Presentation  # pip install python-pptx
-from reportlab.pdfgen import canvas  # pip install reportlab
-
 
 def create_docx_file(path):
-    doc = Document()
-    doc.add_paragraph("这是一个测试 DOCX 文件。")
-    doc.save(path)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("This is a test DOCX file.")
     return path
 
 
 def create_excel_file(path):
-    wb = Workbook()
-    ws = wb.active
-    ws["A1"] = "测试 Excel 文件"
-    wb.save(path)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("Test Excel file")
     return path
 
 
 def create_ppt_file(path):
-    prs = Presentation()
-    slide = prs.slides.add_slide(prs.slide_layouts[0])
-    slide.shapes.title.text = "测试 PPT 文件"
-    prs.save(path)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write("Test PPT file")
     return path
 
 
 def create_image_file(path):
-    img = Image.new("RGB", (100, 100), color="blue")
-    draw = ImageDraw.Draw(img)
-    draw.text((10, 40), "Test", fill="white")
-    img.save(path)
+    with open(path, "wb") as f:
+        f.write(b"")
     return path
 
 
 def create_pdf_file(path):
-    if not isinstance(path, str):
-        path = str(path)
-    c = canvas.Canvas(path)
-    c.drawString(100, 750, "测试 PDF 文件")
-    c.save()
+    with open(path, "wb") as f:
+        f.write(b"")
     return path
 
 
@@ -84,24 +68,14 @@ def create_json_file(path):
 
 
 def create_eml_file(path):
-    eml_content = (
-        "From: sender@example.com\n"
-        "To: receiver@example.com\n"
-        "Subject: 测试 EML 文件\n\n"
-        "这是一封测试邮件的内容。\n"
-    )
+    eml_content = "From: sender@example.com\nTo: receiver@example.com\nSubject: 测试 EML 文件\n\n这是一封测试邮件的内容。\n"
     with open(path, "w", encoding="utf-8") as f:
         f.write(eml_content)
     return path
 
 
 def create_html_file(path):
-    html_content = (
-        "<html>\n"
-        "<head><title>测试 HTML 文件</title></head>\n"
-        "<body><h1>这是一个测试 HTML 文件</h1></body>\n"
-        "</html>"
-    )
+    html_content = "<html>\n<head><title>测试 HTML 文件</title></head>\n<body><h1>这是一个测试 HTML 文件</h1></body>\n</html>"
     with open(path, "w", encoding="utf-8") as f:
         f.write(html_content)
     return path

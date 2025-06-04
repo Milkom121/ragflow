@@ -17,7 +17,42 @@ from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 
 import pytest
-from common import INVALID_API_TOKEN, bulk_upload_documents, list_documnets, parse_documnets, stop_parse_documnets
+from common import INVALID_API_TOKEN, bulk_upload_documents, list_documents, parse_docs, stop_parse_documents
+
+# Correzione refusi nel file:
+# Sostituito list_documnets con list_documents
+# Sostituito parse_documnets con parse_docs
+# Sostituito stop_parse_documnets con stop_parse_documents
+
+
+def list_documnets(auth, dataset_id, params=None):
+    return list_documents(auth, dataset_id, params=params)
+
+
+def parse_documnets(auth, dataset_id, json_req):
+    return parse_docs(auth, dataset_id, json_req)
+
+
+def stop_parse_documnets(auth, dataset_id, json_req):
+    authorization = {"Authorization": auth}
+    url = f"{HOST_ADDRESS}/v1/document/stop_parse"
+    res = requests.post(url=url, headers=authorization, json=json_req)
+    return res.json()
+
+
+def list_documnets(auth, dataset_id, params=None):
+    return list_documents(auth, dataset_id, params=params)
+
+
+def parse_documnets(auth, dataset_id, json_req):
+    return parse_docs(auth, dataset_id, json_req)
+
+
+def stop_parse_documnets(auth, dataset_id, json_req):
+    authorization = {"Authorization": auth}
+    url = f"{HOST_ADDRESS}/v1/document/stop_parse"
+    res = requests.post(url=url, headers=authorization, json=json_req)
+    return res.json()
 from libs.auth import RAGFlowHttpApiAuth
 from libs.utils import wait_for
 

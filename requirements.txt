@@ -1,0 +1,8 @@
+pytest
+requests
+flask
+flask-cors
+hypothesis
+requests-toolbelt
+beartype
+flasgger

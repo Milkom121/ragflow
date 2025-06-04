@@ -14,7 +14,7 @@
 #  limitations under the License.
 #
 
-from common import create_dataset, list_dataset, rm_dataset, update_dataset, DATASET_NAME_LIMIT
+from test_frontend_api.common import create_dataset, list_dataset, rm_dataset, update_dataset, DATASET_NAME_LIMIT
 import re
 import random
 import string

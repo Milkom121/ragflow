@@ -15,7 +15,7 @@
 #
 
 from ragflow_sdk import RAGFlow, Agent
-from common import HOST_ADDRESS
+from .common import HOST_ADDRESS
 import pytest
 
 

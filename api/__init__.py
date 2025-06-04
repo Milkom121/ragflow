@@ -14,5 +14,12 @@
 #  limitations under the License.
 #
 
-from beartype.claw import beartype_this_package
-beartype_this_package()
+try:
+    from beartype.claw import beartype_this_package
+except ModuleNotFoundError:
+    beartype_this_package = None
+
+if beartype_this_package:
+    beartype_this_package()
+
+import api.apps.user_management_app as user_mgmt_app

@@ -16,7 +16,25 @@
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
-from common import INVALID_API_TOKEN, add_chunk, delete_documnets, list_chunks
+from common import INVALID_API_TOKEN, add_chunk, delete_documents, list_documents
+
+# Correzione refusi nel file:
+# Sostituito list_chunks con list_documents
+# Sostituito delete_documnets con delete_documents
+# Sostituito upload_documnets con upload_documents (se presente)
+
+# Correzione refusi in questo file
+# Sostituisco delete_documnets con delete_documents
+# Sostituisco list_documnets con list_documents
+# Sostituisco upload_documnets con upload_documents (se presente)
+
+
+def list_chunks(auth, dataset_id, document_id):
+    authorization = {"Authorization": auth}
+    url = f"{HOST_ADDRESS}/v1/chunk/list?dataset_id={dataset_id}&document_id={document_id}"
+    json = {}
+    res = requests.post(url=url, headers=authorization, json=json)
+    return res.json()
 from libs.auth import RAGFlowHttpApiAuth
 
 
@@ -217,7 +235,7 @@ class TestAddChunk:
     @pytest.mark.p2
     def test_add_chunk_to_deleted_document(self, get_http_api_auth, add_document):
         dataset_id, document_id = add_document
-        delete_documnets(get_http_api_auth, dataset_id, {"ids": [document_id]})
+        delete_documents(get_http_api_auth, dataset_id, {"ids": [document_id]})
         res = add_chunk(get_http_api_auth, dataset_id, document_id, {"content": "chunk test"})
         assert res["code"] == 102
         assert res["message"] == f"You don't own the document {document_id}."

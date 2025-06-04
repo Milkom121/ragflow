@@ -18,7 +18,12 @@ from concurrent.futures import ThreadPoolExecutor
 from random import randint
 
 import pytest
-from common import INVALID_API_TOKEN, delete_documnets, update_chunk
+from common import INVALID_API_TOKEN, delete_documents, update_chunk
+
+# Correzione refusi nel file:
+# Sostituito delete_documnets con delete_documents
+# Sostituito list_documnets con list_documents
+# Sostituito upload_documnets con upload_documents (se presente)
 from libs.auth import RAGFlowHttpApiAuth
 
 
@@ -240,7 +245,7 @@ class TestUpdatedChunk:
     @pytest.mark.p3
     def test_update_chunk_to_deleted_document(self, get_http_api_auth, add_chunks):
         dataset_id, document_id, chunk_ids = add_chunks
-        delete_documnets(get_http_api_auth, dataset_id, {"ids": [document_id]})
+        delete_documents(get_http_api_auth, dataset_id, {"ids": [document_id]})
         res = update_chunk(get_http_api_auth, dataset_id, document_id, chunk_ids[0])
         assert res["code"] == 102
         assert res["message"] == f"Can't find this chunk {chunk_ids[0]}"

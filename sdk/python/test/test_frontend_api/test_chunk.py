@@ -13,8 +13,9 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 
-from common import create_dataset, list_dataset, rm_dataset, upload_file
-from common import list_document, get_docs_info, parse_docs
+from test_frontend_api.utils import create_dataset, list_dataset, rm_dataset, upload_file
+from test_frontend_api.common import list_document, get_docs_info, parse_docs
+import os
 from time import sleep
 from timeit import default_timer as timer
 
@@ -39,7 +40,10 @@ def test_parse_txt_document(get_auth):
         page_number += 1
 
     filename = 'ragflow_test.txt'
-    res = upload_file(get_auth, dataset_id, f"../test_sdk_api/test_data/{filename}")
+    data_dir = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), '..', 'test_sdk_api', 'test_data')
+    )
+    res = upload_file(get_auth, dataset_id, os.path.join(data_dir, filename))
     assert res.get("code") == 0, f"{res.get('message')}"
 
     res = list_document(get_auth, dataset_id)

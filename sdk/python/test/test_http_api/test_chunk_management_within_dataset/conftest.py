@@ -16,13 +16,13 @@
 
 
 import pytest
-from common import add_chunk, delete_chunks, list_documnets, parse_documnets
+from common import add_chunk, delete_chunks, list_document, parse_docs
 from libs.utils import wait_for
 
 
 @wait_for(30, 1, "Document parsing timeout")
 def condition(_auth, _dataset_id):
-    res = list_documnets(_auth, _dataset_id)
+    res = list_document(_auth, _dataset_id)
     for doc in res["data"]["docs"]:
         if doc["run"] != "DONE":
             return False
@@ -32,7 +32,7 @@ def condition(_auth, _dataset_id):
 @pytest.fixture(scope="function")
 def add_chunks_func(request, get_http_api_auth, add_document):
     dataset_id, document_id = add_document
-    parse_documnets(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
+    parse_docs(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
     condition(get_http_api_auth, dataset_id)
 
     chunk_ids = []

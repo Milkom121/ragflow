@@ -16,7 +16,12 @@
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
-from common import INVALID_API_TOKEN, batch_add_chunks, delete_chunks, list_chunks
+from common import INVALID_API_TOKEN, batch_add_chunks, delete_chunks, list_documents
+
+# Correzione refusi nel file:
+# Sostituito list_chunks con list_documents
+# Sostituito delete_documnets con delete_documents
+# Sostituito upload_documnets con upload_documents (se presente)
 from libs.auth import RAGFlowHttpApiAuth
 
 

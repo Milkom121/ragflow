@@ -14,7 +14,7 @@
 #  limitations under the License.
 #
 import pytest
-from common import create_chat_assistant, delete_chat_assistants, list_documnets, parse_documnets
+from ..common import create_chat_assistant, delete_chat_assistants, list_document, parse_docs
 from libs.utils import wait_for
 
 

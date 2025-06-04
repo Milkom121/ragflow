@@ -16,7 +16,24 @@
 from concurrent.futures import ThreadPoolExecutor
 
 import pytest
-from common import INVALID_API_TOKEN, bulk_upload_documents, delete_documnets, list_documnets
+from common import INVALID_API_TOKEN, bulk_upload_documents, delete_documents, list_documents
+
+# Correzione refusi nel file:
+# Sostituito delete_documnets con delete_documents
+# Sostituito list_documnets con list_documents
+# Sostituito upload_documnets con upload_documents (se presente)
+
+
+def delete_documnets(auth, dataset_id, json_req):
+    return delete_documents(auth, json_req)
+
+
+def list_documnets(auth, dataset_id):
+    return list_documents(auth, dataset_id)
+
+
+def upload_documnets(auth, dataset_id, files):
+    return upload_documents(auth, dataset_id, files)
 from libs.auth import RAGFlowHttpApiAuth
 
 
@@ -34,7 +51,7 @@ class TestAuthorization:
         ],
     )
     def test_invalid_auth(self, auth, expected_code, expected_message):
-        res = delete_documnets(auth, "dataset_id")
+        res = delete_documents(auth, "dataset_id")
         assert res["code"] == expected_code
         assert res["message"] == expected_message
 
@@ -80,7 +97,7 @@ class TestDocumentsDeletion:
         if res["code"] != 0:
             assert res["message"] == expected_message
 
-        res = list_documnets(get_http_api_auth, dataset_id)
+        res = list_documents(get_http_api_auth, dataset_id)
         assert len(res["data"]["docs"]) == remaining
         assert res["data"]["total"] == remaining
 
@@ -98,7 +115,7 @@ class TestDocumentsDeletion:
     )
     def test_invalid_dataset_id(self, get_http_api_auth, add_documents_func, dataset_id, expected_code, expected_message):
         _, document_ids = add_documents_func
-        res = delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids[:1]})
+        res = delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids[:1]})
         assert res["code"] == expected_code
         assert res["message"] == expected_message
 
@@ -119,48 +136,48 @@ class TestDocumentsDeletion:
         assert res["code"] == 102
         assert res["message"] == "Documents not found: ['invalid_id']"
 
-        res = list_documnets(get_http_api_auth, dataset_id)
+        res = list_documents(get_http_api_auth, dataset_id)
         assert len(res["data"]["docs"]) == 0
         assert res["data"]["total"] == 0
 
     @pytest.mark.p2
     def test_repeated_deletion(self, get_http_api_auth, add_documents_func):
         dataset_id, document_ids = add_documents_func
-        res = delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids})
+        res = delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids})
         assert res["code"] == 0
 
-        res = delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids})
+        res = delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids})
         assert res["code"] == 102
         assert "Documents not found" in res["message"]
 
     @pytest.mark.p2
     def test_duplicate_deletion(self, get_http_api_auth, add_documents_func):
         dataset_id, document_ids = add_documents_func
-        res = delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids + document_ids})
+        res = delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids + document_ids})
         assert res["code"] == 0
         assert "Duplicate document ids" in res["data"]["errors"][0]
         assert res["data"]["success_count"] == 3
 
-        res = list_documnets(get_http_api_auth, dataset_id)
+        res = list_documents(get_http_api_auth, dataset_id)
         assert len(res["data"]["docs"]) == 0
         assert res["data"]["total"] == 0
 
 
 @pytest.mark.p3
 def test_concurrent_deletion(get_http_api_auth, add_dataset, tmp_path):
-    documnets_num = 100
+    documents_num = 100
     dataset_id = add_dataset
-    document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, documnets_num, tmp_path)
+    document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, documents_num, tmp_path)
 
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = [
             executor.submit(
-                delete_documnets,
+                delete_documents,
                 get_http_api_auth,
                 dataset_id,
                 {"ids": document_ids[i : i + 1]},
             )
-            for i in range(documnets_num)
+            for i in range(documents_num)
         ]
     responses = [f.result() for f in futures]
     assert all(r["code"] == 0 for r in responses)
@@ -168,14 +185,14 @@ def test_concurrent_deletion(get_http_api_auth, add_dataset, tmp_path):
 
 @pytest.mark.p3
 def test_delete_1k(get_http_api_auth, add_dataset, tmp_path):
-    documnets_num = 1_000
+    documents_num = 1_000
     dataset_id = add_dataset
-    document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, documnets_num, tmp_path)
-    res = list_documnets(get_http_api_auth, dataset_id)
-    assert res["data"]["total"] == documnets_num
+    document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, documents_num, tmp_path)
+    res = list_documents(get_http_api_auth, dataset_id)
+    assert res["data"]["total"] == documents_num
 
-    res = delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids})
+    res = delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids})
     assert res["code"] == 0
 
-    res = list_documnets(get_http_api_auth, dataset_id)
+    res = list_documents(get_http_api_auth, dataset_id)
     assert res["data"]["total"] == 0

@@ -16,7 +16,7 @@
 
 
 import pytest
-from common import bulk_upload_documents, delete_documnets
+from common import bulk_upload_documents, delete_documents
 
 
 @pytest.fixture(scope="function")
@@ -25,7 +25,7 @@ def add_document_func(request, get_http_api_auth, add_dataset, ragflow_tmp_dir):
     document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, 1, ragflow_tmp_dir)
 
     def cleanup():
-        delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids})
+        delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids})
 
     request.addfinalizer(cleanup)
     return dataset_id, document_ids[0]
@@ -37,7 +37,7 @@ def add_documents(request, get_http_api_auth, add_dataset, ragflow_tmp_dir):
     document_ids = bulk_upload_documents(get_http_api_auth, dataset_id, 5, ragflow_tmp_dir)
 
     def cleanup():
-        delete_documnets(get_http_api_auth, dataset_id, {"ids": document_ids})
+        delete_documents(get_http_api_auth, dataset_id, {"ids": document_ids})
 
     request.addfinalizer(cleanup)
     return dataset_id, document_ids

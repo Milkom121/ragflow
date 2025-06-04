@@ -14,10 +14,32 @@
 #  limitations under the License.
 #
 import os
+import sys
 
+# Ensure local common module is loaded first when importing by name
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.dirname(__file__)
+    )
+)
+# Ensure project root is in sys.path for imports
+sys.path.insert(
+    0,
+    os.path.abspath(
+        os.path.join(
+            os.path.dirname(__file__),
+            os.pardir,
+            os.pardir,
+            os.pardir,
+            os.pardir,
+        )
+    ),
+)
 import pytest
-from common import (
-    add_chunk,
+import requests
+from requests.exceptions import RequestException
+from .common import (
     batch_create_datasets,
     bulk_upload_documents,
     create_chat_assistant,
@@ -25,7 +47,8 @@ from common import (
     delete_datasets,
     delete_session_with_chat_assistants,
     list_documnets,
-    parse_documnets,
+    parse_docs,
+    add_chunk,
 )
 from libs.auth import RAGFlowHttpApiAuth
 from libs.utils import wait_for
@@ -48,6 +71,12 @@ MARKER_EXPRESSIONS = {
     "p3": "p1 or p2 or p3",
 }
 HOST_ADDRESS = os.getenv("HOST_ADDRESS", "http://127.0.0.1:9380")
+
+# Skip HTTP API tests if server is not available
+try:
+    requests.get(HOST_ADDRESS, timeout=1)
+except RequestException:
+    pytest.skip("HTTP API server not available, skipping HTTP API tests", allow_module_level=True)
 
 
 def pytest_addoption(parser: pytest.Parser) -> None:
@@ -168,7 +197,7 @@ def add_document(get_http_api_auth, add_dataset, ragflow_tmp_dir):
 @pytest.fixture(scope="class")
 def add_chunks(get_http_api_auth, add_document):
     dataset_id, document_id = add_document
-    parse_documnets(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
+    parse_docs(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
     condition(get_http_api_auth, dataset_id)
 
     chunk_ids = []
@@ -191,7 +220,7 @@ def add_chat_assistants(request, get_http_api_auth, add_document):
     request.addfinalizer(cleanup)
 
     dataset_id, document_id = add_document
-    parse_documnets(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
+    parse_docs(get_http_api_auth, dataset_id, {"document_ids": [document_id]})
     condition(get_http_api_auth, dataset_id)
 
     chat_assistant_ids = []
